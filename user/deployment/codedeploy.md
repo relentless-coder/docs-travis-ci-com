@@ -22,11 +22,11 @@ For a minimal configuration with S3, add the following to your `.travis.yml`:
 ```
 {: data-file=".travis.yml"}
 
-Note that in this example, Travis CI will attempt to deploy to an existing CodeDeploy Application called MyApp in AWS Region `us-east-1`.  
+Note that in this example, Travis CI will attempt to deploy to an existing CodeDeploy Application called MyApp in AWS Region `us-east-1`. 
 
 A complete example can be found [here](https://github.com/travis-ci/cat-party/blob/master/.travis.yml).
 
-You can find your AWS Access Keys [here](https://console.aws.amazon.com/iam/home?#security_credential). It is recommended to encrypt that key.
+You need to use your root account keys that you can find [here](https://console.aws.amazon.com/iam/home?#security_credential). You need to encrypt the key, otherwise aws would raise an alarm.
 
 If your CodeDeploy application lives in any region other than `us-east-1` please add a region field to `.travis.yml` (see [AWS-region-to-deploy-to](https://docs.travis-ci.com/user/deployment/codedeploy#AWS-region-to-deploy-to)).
 
@@ -86,19 +86,18 @@ Builds triggered from Pull Requests will never trigger a release.
 
 ### S3 deployment or GitHub deployment
 
-If you specify `bucket` key, the deployment strategy defaults to S3.
-If you want to override this behavior and use GitHub integration, you can specify it with
+For a minimal configuration with Github, add the following to your `.travis.yml`:
 
 ```yaml
-deploy:
-  provider: codedeploy
-  ⋮
-  bucket: "S3 Bucket"
-  revision_type: github
+     deploy:
+       provider: codedeploy
+       access_key_id: "Your AWS ACCESS KEY"
+       secret_access_key: "Your AWS SECRET KEY"
+       application: "Codedeploy application name"
+       deployment_group: "Codedeploy deployment group in a particular application"
+       region: "AWS REGION to deploy to"
 ```
 {: data-file=".travis.yml"}
-
-In this case, S3 deployment provider is not required.
 
 ### Waiting for Deployments
 
